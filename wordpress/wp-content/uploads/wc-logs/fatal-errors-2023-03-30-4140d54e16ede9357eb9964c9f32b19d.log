@@ -1,0 +1,6 @@
+2023-03-30T09:35:36+00:00 CRITICAL syntax error, unexpected '/', expecting ')' in /var/www/html/wordpress3/wordpress/wp-content/themes/oceanwp/functions.php on line 1356
+
+2023-03-30T09:37:00+00:00 CRITICAL syntax error, unexpected '/', expecting ')' in /var/www/html/wordpress3/wordpress/wp-content/themes/oceanwp/functions.php on line 1356
+
+2023-03-30T09:37:04+00:00 CRITICAL syntax error, unexpected '/', expecting ')' in /var/www/html/wordpress3/wordpress/wp-content/themes/oceanwp/functions.php on line 1356
+

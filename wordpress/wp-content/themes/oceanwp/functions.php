@@ -1167,156 +1167,195 @@ function social_button_shortcode( $atts ) {
     }
 }
 add_shortcode( 'social_button', 'social_button_shortcode' );
-// // Register Custom Post Type Testimonial
-// function custom_post_type_testimonial() {
-
-// 	$labels = array(
-// 		'name'                  => _x( 'Testimonials', 'Post Type General Name', 'text_domain' ),
-// 		'singular_name'         => _x( 'Testimonial', 'Post Type Singular Name', 'text_domain' ),
-// 		'menu_name'             => __( 'Testimonials', 'text_domain' ),
-// 		'name_admin_bar'        => __( 'Testimonial', 'text_domain' ),
-// 		'archives'              => __( 'Testimonial Archives', 'text_domain' ),
-// 		'attributes'            => __( 'Testimonial Attributes', 'text_domain' ),
-// 		'parent_item_colon'     => __( 'Parent Testimonial:', 'text_domain' ),
-// 		'all_items'             => __( 'All Testimonials', 'text_domain' ),
-// 		'add_new_item'          => __( 'Add New Testimonial', 'text_domain' ),
-// 		'add_new'               => __( 'Add New', 'text_domain' ),
-// 		'new_item'              => __( 'New Testimonial', 'text_domain' ),
-// 		'edit_item'             => __( 'Edit Testimonial', 'text_domain' ),
-// 		'update_item'           => __( 'Update Testimonial', 'text_domain' ),
-// 		'view_item'             => __( 'View Testimonial', 'text_domain' ),
-// 		'view_items'            => __( 'View Testimonials', 'text_domain' ),
-// 		'search_items'          => __( 'Search Testimonial', 'text_domain' ),
-// 		'not_found'             => __( 'Not found', 'text_domain' ),
-// 		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-// 		'featured_image'        => __( 'Featured Image', 'text_domain' ),
-// 		'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
-// 		'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
-// 		'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
-// 		'insert_into_item'      => __( 'Insert into Testimonial', 'text_domain' ),
-// 		'uploaded_to_this_item' => __( 'Uploaded to this Testimonial', 'text_domain' ),
-// 		'items_list'            => __( 'Testimonials list', 'text_domain' ),
-// 		'items_list_navigation' => __( 'Testimonials list navigation', 'text_domain' ),
-// 		'filter_items_list'     => __( 'Filter Testimonials list', 'text_domain' ),
-// 	);
-// 	$args = array(
-// 		'label'                 => __( 'Testimonial', 'text_domain' ),
-// 		'description'           => __( 'Testimonial Description', 'text_domain' ),
-// 		'labels'                => $labels,
-// 		'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'page-attributes' ),
-// 		'taxonomies'            => array( 'category', 'post_tag' ),
-// 		'hierarchical'          => false,
-// 		'public'                => true,
-// 		'show_ui'               => true,
-// 		'show_in_menu'          => true,
-// 		'menu_position'         => 5,
-// 		'show_in_admin_bar'     => true,
-// 		'show_in_nav_menus'     => true,
-// 		'can_export'            => true,
-	
-// );
-// register_post_type()
 
 
-// // Shortcode to display testimonials as a slider
-// function testimonial_slider_shortcode() {
+add_action('init', 'custom_post_type_movies');
+function custom_post_type_movies() {
+    $supports = array(
+        'title', // post title
+        'editor', // post content
+        'author', // post author
+        'thumbnail', // featured images
+        'excerpt', // post excerpt
+        'custom-fields', // custom fields
+        'comments', // post comments
+        'revisions', // post revisions
+        'post-formats', // post formats
+    );
 
-// 	// Get all testimonials
-// 	$args = array(
-// 		'post_type' => 'testimonial',
-// 		'posts_per_page' => -1,
-// 	);
-// 	$testimonials = new WP_Query( $args );
+    $labels = array(
+        'name' => _x('Movie', 'plural'),
+        'singular_name' => _x('Movie', 'singular'),
+        'menu_name' => _x('Movie', 'admin menu'),
+        'name_admin_bar' => _x('Movie', 'admin bar'),
+        'add_new' => _x('Add New', 'add new'),
+        'add_new_item' => __('Add New Movie'),
+        'new_item' => __('New Movie'),
+        'edit_item' => __('Edit Movie'),
+        'view_item' => __('View Movie'),
+        'all_items' => __('All Movie'),
+        'search_items' => __('Search Movie'),
+        'not_found' => __('No Movie found.'),
+    );
 
-// 	// Start slider HTML output
-// 	$output = '<div class="testimonial-slider">';
+    $args = array(
+        'supports' => $supports,
+        'labels' => $labels,
+        'description' => 'Holds our movie and specific data',
+        'public' => true,
+        'taxonomies' => array( 'category'),
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'can_export' => true,
+        'capability_type' => 'post',
+        'show_in_rest' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'movie'),
+        'has_archive' => true,
+        'hierarchical' => true,
+        'menu_position' => 6,
+        'menu_icon' => 'dashicons-megaphone',
+    );
 
-// 	// Loop through testimonials and generate HTML for each one
-// 	if ( $testimonials->have_posts() ) {
-// 		while ( $testimonials->have_posts() ) {
-// 			$testimonials->the_post();
-// 			$output .= '<div class="testimonial">';
-// 			$output .= '<h3 class="testimonial-title">' . get_the_title() . '</h3>';
-// 			$output .= '<div class="testimonial-content">' . get_the_content() . '</div>';
-// 			$output .= '</div>';
-// 		}
-// 	}
-
-// 	// End slider HTML output
-// 	$output .= '</div>';
-
-// 	// Reset post data
-// 	wp_reset_postdata();
-
-// 	// Return slider HTML output
-// 	return $output;
-// }
-// add_shortcode( 'testimonial_slider', 'testimonial_slider_shortcode' );
-// function enqueue_testimonial_slider_scripts() {
-
-// 	// Enqueue Slick Slider CSS
-// 	wp_enqueue_style( 'slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.9.0/slick/slick.css', array(), '1.9.0' );
-  
-// 	// Enqueue Slick Slider JS and dependencies
-// 	wp_enqueue_script( 'slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.9.0/slick/slick.min.js', array( 'jquery' ), '1.9.0', true );
-  
-// 	// Enqueue custom JS for initializing the slider
-// 	wp_enqueue_script( 'testimonial-slider', get_stylesheet_directory_uri() . '/js/testimonial-slider.js', array( 'jquery', 'slick-js' ), '1.0.0', true );
-  
-//   }
-//   add_action( 'wp_enqueue_scripts', 'enqueue_testimonial_slider_scripts' );
-  
-
-
-// Register Custom Post Type
-function custom_post_type_testimonials() {
-	$labels = array(
-		'name'                  => _x( 'Testimonials', 'Post Type General Name', 'text_domain' ),
-		'singular_name'         => _x( 'Testimonial', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'             => __( 'Testimonials', 'text_domain' ),
-		'name_admin_bar'        => __( 'Testimonials', 'text_domain' ),
-		'archives'              => __( 'Item Archives', 'text_domain' ),
-		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
-		'all_items'             => __( 'All Items', 'text_domain' ),
-		'add_new_item'          => __( 'Add New Item', 'text_domain' ),
-		'add_new'               => __( 'Add New', 'text_domain' ),
-		'new_item'              => __( 'New Item', 'text_domain' ),
-		'edit_item'             => __( 'Edit Item', 'text_domain' ),
-		'update_item'           => __( 'Update Item', 'text_domain' ),
-		'view_item'             => __( 'View Item', 'text_domain' ),
-		'search_items'          => __( 'Search Item', 'text_domain' ),
-		'not_found'             => __( 'Not found', 'text_domain' ),
-		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-		'featured_image'        => __( 'Featured Image', 'text_domain' ),
-		'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
-		'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
-		'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
-		'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
-		'uploaded_to_this_item' => __( 'Uploaded to this item', 'text_domain' ),
-		'items_list'            => __( 'Items list', 'text_domain' ),
-		'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
-		'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
-	);
-	
-	$args = array(
-		'label'                 => __( 'Testimonials', 'text_domain' ),
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 5,
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => true,
-		'can_export'            => true,
-		'has_archive'           => true,
-		'exclude_from_search'   => false,
-		'publicly_queryable'    => true,
-		'capability_type'       => 'page',
-	);
-	
-	register_post_type( 'testimonials', $args );
-
+    register_post_type('movie', $args); // Register Post type
 }
-add_action( 'init', 'custom_post_type_testimonials' );
+
+add_filter('pre_get_posts', 'query_post_type');
+function query_post_type($query) {
+    if( is_category() ) {
+        $post_type = get_query_var('post_type');
+        if($post_type)
+            $post_type = $post_type;
+        else
+            $post_type = array('nav_menu_item', 'post', 'movie'); // don't forget nav_menu_item to allow menus to work!
+        $query->set('post_type',$post_type);
+        return $query;
+    }
+}
+
+//testimonials
+function create_testimonial_post_type() {
+    $labels = array(
+        'name' => 'Testimonials',
+        'singular_name' => 'Testimonial',
+        'add_new' => 'Add New',
+        'add_new_item' => 'Add New Testimonial',
+        'edit_item' => 'Edit Testimonial',
+        'new_item' => 'New Testimonial',
+        'view_item' => 'View Testimonial',
+        'search_items' => 'Search Testimonials',
+        'not_found' =>  'No Testimonials found',
+        'not_found_in_trash' => 'No Testimonials in the trash',
+        'parent_item_colon' => '',
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'exclude_from_search' => true,
+        'query_var' => true,
+        'rewrite' => true,
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
+        'menu_position' => 20,
+        'supports' => array( 'title', 'editor', 'thumbnail' ),
+    );
+
+    register_post_type( 'testimonial', $args );
+}
+add_action( 'init', 'create_testimonial_post_type' );
+
+function testimonials_meta_boxes() {
+    add_meta_box( 'testimonials_details', 'Testimonial Details', 'testimonials_details_callback', 'testimonials', 'normal', 'high' );
+}
+
+function testimonials_details_callback( $post ) {
+    wp_nonce_field( 'testimonials_save_meta', 'testimonials_meta_nonce' );
+
+    $testimonial_name = get_post_meta( $post->ID, '_testimonial_name', true );
+    $testimonial_company = get_post_meta( $post->ID, '_testimonial_company', true );
+    $testimonial_url = get_post_meta( $post->ID, '_testimonial_url', true );
+    ?>
+
+    <p>
+        <label for="testimonial_name">Name:</label>
+        <input type="text" name="testimonial_name" id="testimonial_name" value="<?php echo esc_attr( $testimonial_name ); ?>" />
+    </p>
+
+    <p>
+        <label for="testimonial_company">Company:</label>
+        <input type="text" name="testimonial_company" id="testimonial_company" value="<?php echo esc_attr( $testimonial_company ); ?>" />
+    </p>
+
+    <p>
+        <label for="testimonial_url">URL:</label>
+        <input type="text" name="testimonial_url" id="testimonial_url" value="<?php echo esc_url( $testimonial_url ); ?>" />
+    </p>
+
+    <?php
+}
+
+function testimonials_save_meta( $post_id ) {
+    if ( ! isset( $_POST['testimonials_meta_nonce'] ) || ! wp_verify_nonce( $_POST['testimonials_meta_nonce'], 'testimonials_save_meta' ) ) {
+        return;
+    }
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    $testimonial_name = isset( $_POST['testimonial_name'] ) ? sanitize_text_field( $_POST['testimonial_name'] ) : '';
+    $testimonial_company = isset( $_POST['testimonial_company'] ) ? sanitize_text_field( $_POST['testimonial_company'] ) : '';
+    $testimonial_url = isset( $_POST['testimonial_url'] ) ? esc_url_raw( $_POST['testimonial_url'] ) : '';
+
+    update_post_meta( $post_id, '_testimonial_name', $testimonial_name );
+    update_post_meta( $post_id, '_testimonial_company', $testimonial_company );
+    update_post_meta( $post_id, '_testimonial_url', $testimonial_url );
+}
+
+add_action( 'add_meta_boxes', 'testimonials_meta_boxes' );
+add_action( 'save_post', 'testimonials_save_meta' );
+
+
+function testimonials_slider_shortcode() {
+    $query = new WP_Query( array(
+        'post_type' => 'testimonial',
+        'posts_per_page' => -1,
+    ) );
+
+    $output = '<div class="testimonial-slider">';
+
+    while ( $query->have_posts() ) {
+        $query->the_post();
+        $output .= '<div class="testimonial-slide">';
+        $output .= '<blockquote>';
+        $output .= get_the_content();
+        $output .= '<cite>' . get_the_title() . '</cite>';
+        $output .= '</blockquote>';
+        $output .= '</div>';
+    }
+
+    $output .= '</div>';
+
+    wp_reset_postdata();
+
+    return $output;
+}
+add_shortcode( 'testimonials-slider', 'testimonials_slider_shortcode' );
+
+
+// Enqueue testimonial slider script
+function enqueue_testimonial_slider_script() {
+    wp_enqueue_script( 'testimonial-slider', get_stylesheet_directory_uri() . '/javascript/testimonial-slider.js', array('jquery'), '1.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_testimonial_slider_script' );
+
