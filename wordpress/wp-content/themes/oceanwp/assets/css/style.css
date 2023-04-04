@@ -9308,7 +9308,7 @@ body.default-breakpoint .after-header-content {
 
 
 
-/* .entry-content[ast-blocks-layout] > * {
+.entry-content[ast-blocks-layout] > * {
     margin-left: auto;
     margin-right: auto;
     margin: 10px;
@@ -9375,4 +9375,4 @@ cite {
 .ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a) {
     text-decoration: underline;
     COLOR: WHITE;
-} */
+}
